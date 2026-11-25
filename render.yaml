@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: smartcare-vr
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.6"
+      # 下面三个不填也能跑：没有 Key 时 /api/chat 自动使用预设回复
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_BASE_URL
+        value: https://api.deepseek.com/v1
+      - key: AI_MODEL
+        value: deepseek-chat
